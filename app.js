@@ -14,13 +14,13 @@ new Vue({
             this.turns = [];
         },
         attack: function() {
-            if (this.playerAttack(3,10)){
+            if (this.playerAttack(3, 10, false)){
                 return;
             }
             this.monsterAttack();
         }, 
         specialAttack: function() {
-            if (this.playerAttack(10,20)){
+            if (this.playerAttack(10, 20, true)){
                 return;
             }
             this.monsterAttack();
@@ -73,12 +73,18 @@ new Vue({
             });
             this.checkWinner();
         }, 
-        playerAttack: function(min, max){
+        playerAttack: function(min, max, isSpecial){
             let damage = this.calculateDamage(min,max);
             this.monsterHealth -= damage;
+            let logText = '';
+            if (isSpecial === true) {
+                logText = "Player hits monster hard for "; 
+            } else {
+                logText = "Player hits monster for ";
+            }
             this.turns.unshift({
                 isPlayer: true, 
-                text: 'Player hits monster for ' + damage
+                text: logText + damage
             });
             if (this.checkWinner()){
                 return true;
